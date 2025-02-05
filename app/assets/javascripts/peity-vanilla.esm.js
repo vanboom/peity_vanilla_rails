@@ -87,8 +87,7 @@ class Peity {
     this.observer = new MutationObserver(this.draw.bind(this));
     const config = { attributes: true, childList: true, subtree: true };
     this.observer.observe(this.element, config);
-
-
+    this.draw();
     this.mounted = true;
   }
 
