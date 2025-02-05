@@ -80,16 +80,27 @@ class Peity {
   mount() {
     if (!svgSupported) return;
 
-    this.element.addEventListener("DOMSubtreeModified", this.draw.bind(this));
-    this.draw();
+    // OLD WAY
+    // this.element.addEventListener("DOMSubtreeModified", this.draw.bind(this));
+    // this.draw();
+
+    this.observer = new MutationObserver(this.draw.bind(this));
+    const config = { attributes: true, childList: true, subtree: true };
+    this.observer.observe(this.element, config);
+
 
     this.mounted = true;
   }
 
   unmount() {
-    this.element.removeEventListener("DOMSubtreeModified", this.draw);
+    // OLD WAY this.element.removeEventListener("DOMSubtreeModified", this.draw);
     this.svg.remove();
     this.mounted = false;
+
+    if (this.observer) {
+      this.observer.disconnect();
+    }
+
   }
 
   destroy() {
